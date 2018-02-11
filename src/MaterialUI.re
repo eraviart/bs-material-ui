@@ -1996,6 +1996,33 @@ module Typography = {
       | Right => "right"
       | Justify => "justify";
   };
+  module Variant = {
+    type t =
+      | Display4
+      | Display3
+      | Display2
+      | Display1
+      | Headline
+      | Title
+      | Subheading
+      | Body2
+      | Body1
+      | Caption
+      | Button;
+    let to_string =
+      fun
+      | Display4 => "display4"
+      | Display3 => "display3"
+      | Display2 => "display2"
+      | Display1 => "display1"
+      | Headline => "headline"
+      | Title => "title"
+      | Subheading => "subheading"
+      | Body2 => "body2"
+      | Body1 => "body1"
+      | Caption => "caption"
+      | Button => "button";
+  };
   [@bs.module "material-ui/Typography"]
   external typography : ReasonReact.reactClass = "default";
   let make =
@@ -2009,8 +2036,8 @@ module Typography = {
         ~headlineMapping: option(Js.t({..}))=?,
         ~noWrap: option(bool)=?,
         ~paragraph: option(bool)=?,
-        ~_type: option(string)=?,
         ~style: option(ReactDOMRe.style)=?,
+        ~variant: option(Variant.t)=?,
         children
       ) =>
     ReasonReact.wrapJsForReason(
@@ -2027,8 +2054,8 @@ module Typography = {
             "headlineMapping": from_opt(headlineMapping),
             "noWrap": unwrap_bool(noWrap),
             "paragraph": unwrap_bool(paragraph),
-            "type": from_opt(_type),
-            "style": from_opt(style)
+            "style": from_opt(style),
+            "variant": from_opt(option_map(Variant.to_string, variant))
           }
         ),
       children
