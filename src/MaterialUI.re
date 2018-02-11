@@ -169,26 +169,47 @@ module Button = {
       | Contrast => "contrast"
       | Accent => "accent";
   };
+  module Size = {
+    type t =
+      | Large
+      | Medium
+      | Small;
+    let to_string =
+      fun
+      | Large => "large"
+      | Medium => "medium"
+      | Small => "small";
+  };
+  module Variant = {
+    type t =
+      | Fab
+      | Flat
+      | Raised;
+    let to_string =
+      fun
+      | Fab => "fab"
+      | Flat => "flat"
+      | Raised => "raised";
+  };
   [@bs.module "material-ui/Button"]
   external reactClass : ReasonReact.reactClass = "default";
   let make =
       (
-        ~style: option(ReactDOMRe.style)=?,
         ~centerRipple: option(bool)=?,
-        ~focusRipple: option(bool)=?,
         ~classes: option(Js.t({..}))=?,
         ~className: option(string)=?,
         ~color: option(Color.t)=?,
         ~component: option(string)=?,
-        ~dense: option(bool)=?,
         ~disabled: option(bool)=?,
         ~disableFocusRipple: option(bool)=?,
         ~disableRipple: option(bool)=?,
-        ~fab: option(bool)=?,
+        ~fullWidth: option(bool)=?,
         ~href: option(string)=?,
-        ~raised: option(bool)=?,
-        ~_type: option(string)=?,
+        ~mini: option(bool)=?,
         ~onClick: option(ReactEventRe.Mouse.t => unit)=?,
+        ~size: option(Size.t)=?,
+        ~style: option(ReactDOMRe.style)=?,
+        ~variant: option(Variant.t)=?,
         children
       ) =>
     ReasonReact.wrapJsForReason(
@@ -196,22 +217,21 @@ module Button = {
       ~props=
         Js.Nullable.(
           {
+            "centerRipple": unwrap_bool(centerRipple),
             "classes": from_opt(classes),
             "className": from_opt(className),
             "color": from_opt(option_map(Color.to_string, color)),
             "component": from_opt(component),
-            "dense": unwrap_bool(dense),
             "disabled": unwrap_bool(disabled),
             "disableFocusRipple": unwrap_bool(disableFocusRipple),
             "disableRipple": unwrap_bool(disableRipple),
-            "fab": unwrap_bool(fab),
+            "fullWidth": unwrap_bool(fullWidth),
             "href": from_opt(href),
-            "raised": unwrap_bool(raised),
-            "type": from_opt(_type),
+            "mini": unwrap_bool(mini),
             "onClick": from_opt(onClick),
+            "size": from_opt(option_map(Size.to_string, size)),
             "style": from_opt(style),
-            "centerRipple": unwrap_bool(centerRipple),
-            "focusRipple": unwrap_bool(focusRipple)
+            "variant": from_opt(option_map(Variant.to_string, variant))
           }
         ),
       children
