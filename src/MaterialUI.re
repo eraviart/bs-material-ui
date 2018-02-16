@@ -209,6 +209,7 @@ module Button = {
         ~onClick: option(ReactEventRe.Mouse.t => unit)=?,
         ~size: option(Size.t)=?,
         ~style: option(ReactDOMRe.style)=?,
+        ~title: option(string)=?,
         ~variant: option(Variant.t)=?,
         children
       ) =>
@@ -231,6 +232,7 @@ module Button = {
             "onClick": from_opt(onClick),
             "size": from_opt(option_map(Size.to_string, size)),
             "style": from_opt(style),
+            "title": from_opt(title),
             "variant": from_opt(option_map(Variant.to_string, variant))
           }
         ),
@@ -587,10 +589,10 @@ module Dialog = {
           {
             "classes": from_opt(classes),
             "className": from_opt(className),
-            "disableBackdropClick": from_opt(disableBackdropClick),
-            "disableEscapeKeyUp": from_opt(disableEscapeKeyUp),
-            "fullScreen": from_opt(fullScreen),
-            "fullWidth": from_opt(fullWidth),
+            "disableBackdropClick": unwrap_bool(disableBackdropClick),
+            "disableEscapeKeyUp": unwrap_bool(disableEscapeKeyUp),
+            "fullScreen": unwrap_bool(fullScreen),
+            "fullWidth": unwrap_bool(fullWidth),
             "onBackdropClick": from_opt(onBackdropClick),
             "onClose": from_opt(onClose),
             "onEnter": from_opt(onEnter),
@@ -600,7 +602,7 @@ module Dialog = {
             "onExit": from_opt(onExit),
             "onExited": from_opt(onExited),
             "onExiting": from_opt(onExiting),
-            "open": from_opt(_open),
+            "open": unwrap_bool(_open),
             "style": from_opt(style)
           }
         ),
@@ -957,6 +959,7 @@ module IconButton = {
         ~color: option(Color.t)=?,
         ~disabled: option(bool)=?,
         ~disableRipple: option(bool)=?,
+        ~href: option(string)=?,
         ~style: option(ReactDOMRe.style)=?,
         ~onClick: option(ReactEventRe.Mouse.t => unit)=?,
         children
@@ -971,6 +974,7 @@ module IconButton = {
             "color": from_opt(option_map(Color.to_string, color)),
             "disableRipple": unwrap_bool(disableRipple),
             "disabled": unwrap_bool(disabled),
+            "href": from_opt(href),
             "style": from_opt(style),
             "onClick": from_opt(onClick)
           }
@@ -1353,6 +1357,7 @@ module Paper = {
         ~className: option(string)=?,
         ~component: option(string)=?,
         ~elevation: option(int)=?,
+        ~id: option(string)=?,
         ~square: option(bool)=?,
         ~style: option(ReactDOMRe.style)=?,
         children
@@ -1366,6 +1371,7 @@ module Paper = {
             "className": from_opt(className),
             "component": from_opt(component),
             "elevation": from_opt(elevation),
+            "id": from_opt(id),
             "square": unwrap_bool(square),
             "style": from_opt(style)
           }
