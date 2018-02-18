@@ -159,15 +159,13 @@ module Button = {
       | Default
       | Inherit
       | Primary
-      | Contrast
-      | Accent;
+      | Secondary;
     let to_string =
       fun
       | Default => "default"
       | Inherit => "inherit"
       | Primary => "primary"
-      | Contrast => "contrast"
-      | Accent => "accent";
+      | Secondary => "secondary";
   };
   module Size = {
     type t =
@@ -940,15 +938,13 @@ module IconButton = {
       | Default
       | Inherit
       | Primary
-      | Contrast
-      | Accent;
+      | Secondary;
     let to_string =
       fun
       | Default => "default"
       | Inherit => "inherit"
       | Primary => "primary"
-      | Contrast => "contrast"
-      | Accent => "accent";
+      | Secondary => "secondary";
   };
   [@bs.module "material-ui/IconButton"]
   external reactClass : ReasonReact.reactClass = "default";
@@ -1440,6 +1436,45 @@ module Select = {
             "placeholder": from_opt(placeholder),
             "type": from_opt(inputType),
             "onChange": from_opt(onChange)
+          }
+        ),
+      children
+    );
+};
+
+module Snackbar = {
+  [@bs.module "material-ui/Snackbar"]
+  external reactClass : ReasonReact.reactClass = "default";
+  let make =
+      (
+        ~action: option(ReasonReact.reactElement)=?,
+        /* TODO: anchorOrigin */
+        ~autoHideDuration: option(int)=?,
+        /* ~position: option(string)=?,
+           ~color: option(string)=?, */
+        ~classes: option(Js.t({..}))=?,
+        ~message: option(ReasonReact.reactElement)=?,
+        ~onClose: option((ReactEventRe.Synthetic.t, string) => unit)=?,
+        ~_open: option(bool)=?,
+        ~style: option(ReactDOMRe.style)=?,
+        ~className: option(string)=?,
+        children
+      ) =>
+    ReasonReact.wrapJsForReason(
+      ~reactClass,
+      ~props=
+        Js.Nullable.(
+          {
+            "action": from_opt(action),
+            "autoHideDuration": from_opt(autoHideDuration),
+            /* "position": from_opt(position),
+               "color": from_opt(color), */
+            "classes": from_opt(classes),
+            "message": from_opt(message),
+            "onClose": from_opt(onClose),
+            "open": unwrap_bool(_open),
+            "style": from_opt(style),
+            "className": from_opt(className)
           }
         ),
       children
