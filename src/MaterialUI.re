@@ -648,7 +648,7 @@ module Drawer = {
       | Right => "right"
       | Bottom => "bottom";
   };
-  module Type = {
+  module Variant = {
     type t =
       | Permanent
       | Persistent
@@ -672,8 +672,8 @@ module Drawer = {
         ~onClose: option(unit => unit)=?,
         ~_open: option(bool)=?,
         ~slideProps: option(Js.t({..}))=?,
-        ~_type: option(Type.t)=?,
         ~style: option(ReactDOMRe.style)=?,
+        ~variant: option(Variant.t)=?,
         children
       ) =>
     ReasonReact.wrapJsForReason(
@@ -690,8 +690,8 @@ module Drawer = {
             "onClose": from_opt(onClose),
             "open": unwrap_bool(_open),
             "SlideProps": from_opt(slideProps),
-            "type": from_opt(option_map(Type.to_string, _type)),
-            "style": from_opt(style)
+            "style": from_opt(style),
+            "variant": from_opt(option_map(Variant.to_string, variant))
           }
         ),
       children
@@ -926,6 +926,75 @@ module Grid = {
             "xs": from_opt(xs),
             "spacing": from_opt(spacing),
             "wrp": from_opt(wrap)
+          }
+        ),
+      children
+    );
+};
+
+module Hidden = {
+  module Breakpoint = {
+    type t =
+      | Lg
+      | Md
+      | Sm
+      | Xl
+      | Xs;
+    let to_string =
+      fun
+      | Lg => "lg"
+      | Md => "md"
+      | Sm => "sm"
+      | Xl => "xl"
+      | Xs => "xs";
+  };
+  module Implementation = {
+    type t =
+      | Css
+      | Js;
+    let to_string =
+      fun
+      | Css => "css"
+      | Js => "js";
+  };
+  [@bs.module "material-ui/Hidden"]
+  external reactClass : ReasonReact.reactClass = "default";
+  let make =
+      (
+        ~implementation: option(Implementation.t)=?,
+        /* ~initialWidth: option(Breakpoint.t)=?, */
+        ~lgDown: option(bool)=?,
+        ~lgUp: option(bool)=?,
+        ~mdDown: option(bool)=?,
+        ~mdUp: option(bool)=?,
+        ~only: option(Breakpoint.t)=?,
+        ~smDown: option(bool)=?,
+        ~smUp: option(bool)=?,
+        ~xlDown: option(bool)=?,
+        ~xlUp: option(bool)=?,
+        ~xsDown: option(bool)=?,
+        ~xsUp: option(bool)=?,
+        children
+      ) =>
+    ReasonReact.wrapJsForReason(
+      ~reactClass,
+      ~props=
+        Js.Nullable.(
+          {
+            "implementation":
+              from_opt(option_map(Implementation.to_string, implementation)),
+            /* "initialWidth": from_opt(option_map(Breakpoint.to_string, initialWidth)), */
+            "lgDown": unwrap_bool(lgDown),
+            "lgUp": unwrap_bool(lgUp),
+            "mdDown": unwrap_bool(mdDown),
+            "mdUp": unwrap_bool(mdUp),
+            "only": from_opt(option_map(Breakpoint.to_string, only)),
+            "smDown": unwrap_bool(smDown),
+            "smUp": unwrap_bool(smUp),
+            "xlDown": unwrap_bool(xlDown),
+            "xlUp": unwrap_bool(xlUp),
+            "xsDown": unwrap_bool(xsDown),
+            "xsUp": unwrap_bool(xsUp)
           }
         ),
       children
